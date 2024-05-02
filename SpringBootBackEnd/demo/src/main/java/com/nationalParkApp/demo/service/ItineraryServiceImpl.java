@@ -1,9 +1,11 @@
 package com.nationalParkApp.demo.service;
 
 
+import com.nationalParkApp.demo.Model.Review;
 import com.nationalParkApp.demo.Repository.ItineraryRepository;
 import com.nationalParkApp.demo.entity.ItineraryEntity;
 import com.nationalParkApp.demo.Model.Itinerary;
+import com.nationalParkApp.demo.entity.ReviewEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,27 +52,45 @@ public class ItineraryServiceImpl implements ItineraryService {
 
     @Override
     public List<Itinerary> getAllItinerariesByParkCode(String parkCode) {
-        List<ItineraryEntity> itineraryEntities = itineraryRepository.findByParkCode(parkCode);
+        List<ItineraryEntity> itineraryEntities = itineraryRepository.findAllByParkCode(parkCode);
 
         List<Itinerary> itineraries = itineraryEntities.stream().map(iti -> new Itinerary(
                         iti.getId(),
                         iti.getStartDate(),
                         iti.getEndDate(),
-                        iti.getParkCode()))
+                        iti.getParkCode(),
+                        iti.getUser()))
                 .collect(Collectors.toList());
         return itineraries;
     }
 
     @Override
-    public List<Itinerary> getAllItinerariesByUserId(Long id) {
-        List<ItineraryEntity> itineraryEntities = itineraryRepository.findByUserId(id);
+    public ResponseEntity getAllItinerariesByUserId(Long userId) {
+        ResponseEntity response = null;
+        try {
+            List<ItineraryEntity> itineraryEntities = itineraryRepository.findAllByUserId(userId);
+            if (!itineraryEntities.isEmpty()) {
+                List<Itinerary> itineraries = itineraryEntities.stream().map(iti -> new Itinerary(
+                                iti.getId(),
+                                iti.getStartDate(),
+                                iti.getEndDate(),
+                                iti.getParkCode(),
+                                iti.getUser()))
+                        .collect(Collectors.toList());
+                response = ResponseEntity
+                        .status(HttpStatus.ACCEPTED)
+                        .body(itineraries);
+            } else {
+                response = ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body("No itineraries found");
+            }
+        } catch (Exception ex) {
+            response = ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("AN exception occurred due to " + ex.getMessage());
+        }
 
-        List<Itinerary> itineraries = itineraryEntities.stream().map(iti -> new Itinerary(
-                        iti.getId(),
-                        iti.getStartDate(),
-                        iti.getEndDate(),
-                        iti.getParkCode()))
-                .collect(Collectors.toList());
-        return itineraries;
+        return response;
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import Slideshow from './Slideshow'
 import Header from './Header'
@@ -6,9 +6,11 @@ import axios from 'axios';
 import LoginService from '../Services/LoginService';
 import { useNavigate } from "react-router-dom";
 
+const api_key=import.meta.env.VITE_REACT_APP_NPS_API_KEY;
+const parkAlertURL = "https://developer.nps.gov/api/v1/alerts?parkCode=YELL%2CACAD%2CROMO&api_key="+api_key;
 const SERVER_API_BASE_URL = "http://localhost:8080/";
 const axiosInstance = axios.create({
-        //withCredentials: true,
+        withCredentials: true,
         baseURL: SERVER_API_BASE_URL,
         headers: {
         "Cache-Control": "no-cache",
@@ -23,15 +25,12 @@ const axiosInstance = axios.create({
 
 function Login() {
     const [userLogin, setUser] = useState({username: "",password: ""})
-    const navigate = useNavigate();
+    //const [loggedInUser, setLoggedInUser] =useState({username:"",password: "" })
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         
         LoginService.login(userLogin, axiosInstance);
-        const loggedInUser = JSON.parse(window.localStorage.getItem("User"));
-        if (userLogin.username == loggedInUser.username) {
-          navigate("/parksearch");
-        };
         };
         
           

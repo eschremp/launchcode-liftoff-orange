@@ -27,7 +27,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<ItineraryEntity> itineraries;
+    private List<ItineraryEntity> itineraries = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -35,7 +35,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<FavoritesEntity> favorites;
+    private List<FavoritesEntity> favorites = new ArrayList<>();
 
     private String role = "user";
 

@@ -38,9 +38,9 @@ function Header() {
             path:'/favorites'
         },
         {
-            name:'ITINERARY',
+            name:'ALERTS',
             icon:HiPaperAirplane,
-            path:'/itinerary'
+            path:'/alerts'
         },
         {
             name:'PROFILE',

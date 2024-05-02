@@ -15,6 +15,7 @@ import ParkDetails from './Components/ParkDetails'
 import Register from './Components/Register'
 import Login from './Components/Login'
 import Footer from './Components/Footer'
+import Alerts from './Components/Alerts'
 
 
 // ### ORIGINAL BEFORE ROUTER ###
@@ -32,6 +33,7 @@ function App() {
           <Route path="/createreview" element={<CreateReview />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/itinerary" element={<Itinerary />} />
+          <Route path="/alerts" element={<Alerts />} />
           <Route path="/register" element={<Register />} />
           <Route path = "/parksearch" element = {<ParkSearch />} >
             <Route path = "search" element = {<SearchList />} />

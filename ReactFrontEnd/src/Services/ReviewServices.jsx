@@ -28,8 +28,11 @@ class ReviewService {
     return axios.get(REVIEW_API_BASE_URL + "/" + "user", id);
   }
 
-  getReviewsByParkcode(parkcode) {
-    return axios.get(REVIEW_API_BASE_URL + "/" + "parkcode" + parkcode);
+  getReviewsByParkcode(parkCode, instance) {
+    instance.defaults.headers["Authorization"] = localStorage.getItem("Auth");
+    instance.get("/getparkreviews/"+parkCode)
+    .then((response) => {
+  return response.data});
   }
 
   deleteReview(id) {

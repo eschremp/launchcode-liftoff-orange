@@ -8,7 +8,7 @@ import LoginService from '../Services/LoginService';
 
   const SERVER_API_BASE_URL = "http://localhost:8080";
   const axiosInstance = axios.create({
-        //withCredentials: true,
+        withCredentials: true,
         baseURL: SERVER_API_BASE_URL,
         headers: {
         "Cache-Control": "no-cache",
@@ -21,21 +21,22 @@ import LoginService from '../Services/LoginService';
         }});
 
 function Register() {
-  const [user, setUser] = useState({username: "", password: ""});
-  //const navigate = useNavigate();
+  const [user, setUser] = useState({username:"", password:""});
+  const navigate = useNavigate();
   
 
   const handleSubmit = (event) => {
     event.preventDefault();
     axiosInstance.post("/register", user).then((response) => {
         if(response.status == 201){
-          LoginService.login(user,axiosInstance);
-        const loggedInUser = JSON.parse(window.localStorage.getItem("User"));
-        if (user.username == loggedInUser.username) {
-          console.log("yes");
+          window.localStorage.setItem("User", JSON.stringify(response.data));
+          const hash = window.btoa(user.username+":"+user.password);
+          const authHeader = "Basic "+ hash;
+          window.localStorage.setItem("Auth", authHeader);
+          navigate("/")
         
         
-      }}})  
+      }})  
   };
 
   const handleChange = (event) => {

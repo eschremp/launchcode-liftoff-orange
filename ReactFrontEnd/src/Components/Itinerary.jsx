@@ -25,7 +25,7 @@ const [startDate, setStartDate] = useState(new Date());
 const [endDate, setEndDate] = useState(new Date());
 
 const user = JSON.parse(window.localStorage.getItem("User"));
-const ITINERARY_API_BASE_URL = "http://localhost:8080/api/v1";
+const ITINERARY_API_BASE_URL = "http://localhost:8080/api/v1/itinerary";
 const axiosInstance = axios.create({
     withCredentials: true,
     baseURL: ITINERARY_API_BASE_URL,
@@ -58,9 +58,10 @@ const handleChange = (name, date) => {
 const saveItinerary = (e) => {
   e.preventDefault();
   setItinerary({ ...itinerary, user: user });
+  const isCreated = ItineraryServices.CreateItinerary(itinerary, axiosInstance);
+  navigate("/");
   
-  ItineraryServices.CreateItinerary(itinerary, axiosInstance)
-      //navigate("/home")
+      
     }
     
 

@@ -4,6 +4,7 @@ import com.nationalParkApp.demo.entity.ReviewEntity;
 import com.nationalParkApp.demo.Model.Review;
 import com.nationalParkApp.demo.Repository.ReviewRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class ReviewServiceImpl implements ReviewService{
 
+    @Autowired
     private ReviewRepository reviewRepository;
 
     public ReviewServiceImpl(ReviewRepository reviewRepository) {
@@ -71,11 +73,11 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public ResponseEntity<String> getAllReviewsByParkCode(String parkCode) {
+    public ResponseEntity getAllReviewsByParkCode(String parkCode) {
 
         ResponseEntity response = null;
         try {
-            List<ReviewEntity> reviewEntities = reviewRepository.findByParkCode(parkCode);
+            List<ReviewEntity> reviewEntities = reviewRepository.findAllByParkCode(parkCode);
             if (reviewEntities.size()>0){
                 List<Review> reviews = reviewEntities.stream().map(rev -> new Review(
                                 rev.getId(),
@@ -101,12 +103,12 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public ResponseEntity<String> getAllReviewsByUserId(Long userId) {
+    public ResponseEntity getAllReviewsByUserId(Long userId) {
 
         ResponseEntity response = null;
         try {
-            List<ReviewEntity> reviewEntities = reviewRepository.findByUserId(userId);
-            if (reviewEntities.size() > 0) {
+            List<ReviewEntity> reviewEntities = reviewRepository.findAllByUserId(userId);
+            if (!reviewEntities.isEmpty()) {
                 List<Review> reviews = reviewEntities.stream().map(rev -> new Review(
                                 rev.getId(),
                                 rev.getContent(),
@@ -131,11 +133,27 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public boolean deleteReview(Long id) {
-        ReviewEntity review = reviewRepository.findById(id).get();
-        reviewRepository.delete(review);
-        return true;
+    public ResponseEntity<String> deleteReview(Long reviewId) {
+
+        ResponseEntity<String> response = null;
+        try {
+        if (reviewRepository.findById(reviewId).isPresent()) {
+            ReviewEntity reviewEntity = reviewRepository.findById(reviewId).get();
+            reviewRepository.delete(reviewEntity);
+            response = ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("Review deleted");
+        } else {
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Review not found");
+        }}
+    catch (Exception ex) {
+        response = ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("AN exception occurred due to " + ex.getMessage());
     }
+        return response;
+}
 
     @Override
     public Review getReviewById() {

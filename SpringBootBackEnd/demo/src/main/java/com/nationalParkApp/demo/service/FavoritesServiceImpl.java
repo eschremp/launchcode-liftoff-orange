@@ -51,7 +51,7 @@ public class FavoritesServiceImpl implements FavoritesService {
 
     @Override
     public List<Favorites> getAllByParkCode(String parkCode) {
-        List<FavoritesEntity> favoritesEntities = favoritesRepository.findByParkCode(parkCode);
+        List<FavoritesEntity> favoritesEntities = favoritesRepository.findAllByParkCode(parkCode);
 
         List<Favorites> favorites = favoritesEntities.stream().map(fav -> new Favorites(
                         fav.getId(),
@@ -63,7 +63,7 @@ public class FavoritesServiceImpl implements FavoritesService {
 
     @Override
     public List<Favorites> getAllByUserId(Long id) {
-        List<FavoritesEntity> favoritesEntities = favoritesRepository.findByUserId(id);
+        List<FavoritesEntity> favoritesEntities = favoritesRepository.findAllByUserId(id);
 
         List<Favorites> favorites = favoritesEntities.stream().map(fav -> new Favorites(
                         fav.getId(),

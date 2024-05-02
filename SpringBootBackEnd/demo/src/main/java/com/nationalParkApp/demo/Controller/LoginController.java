@@ -26,6 +26,7 @@ public class LoginController {
 
         ResponseEntity response = null;
         try {
+            if(!(user.getUsername().isEmpty() && user.getPassword().isEmpty())){
             String hashward = passwordEncoder.encode(user.getPassword());
             user.setPassword(hashward);
 
@@ -33,8 +34,12 @@ public class LoginController {
             if (user.getId()>0) {
                 response = ResponseEntity
                         .status(HttpStatus.CREATED)
-                        .body("Given user details are successfully registered");
-            }
+                        .body(user);
+            }} else {
+                response = ResponseEntity
+                        .status(HttpStatus.NOT_ACCEPTABLE)
+                        .body("Please enter a username and password");
+        }
         } catch (Exception ex) {
             response = ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

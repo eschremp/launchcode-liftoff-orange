@@ -1,17 +1,21 @@
 import axios from "axios";
+import { Link, useNavigate } from 'react-router-dom'
 
 const ITINERARY_API_BASE_URL = "http://localhost:8080/api/v1/itinerary";
 
-class ItineraryServie {
+class ItineraryService {
+  
+
   CreateItinerary(itinerary,instance) {
-    if (window.localStorage.getItem("Auth")) {
-      instance.defaults.headers["Authorization"] = window.localStorage.getItem("Auth");
-      instance.post('/itinerary',itinerary)
-      .then((response) => {
+    
+    instance.defaults.headers["Authorization"] = window.localStorage.getItem("Auth");
+    instance.post('/createitinerary',itinerary)
+    .then((response) => {
       if(response.status == 201) {
-      }});
+        return true;
+      }else{return false}});
     }
-  }
+  
 
   deleteItinerary(id) {
     return axios.delete(ITINERARY_API_BASE_URL + "/" + id);
@@ -21,9 +25,13 @@ class ItineraryServie {
     return axios.get(ITINERARY_API_BASE_URL + "/" + "parkcode" + parkCode);
   }
 
-  getItinerariesByUserId(id) {
-    return axios.get(ITINERARY_API_BASE_URL + "/" + "user" + id);
+  getItinerariesByUserId(userId,instance) {
+    if (window.localStorage.getItem("Auth")) {
+      instance.defaults.headers["Authorization"] = window.localStorage.getItem("Auth");
+      instance.get('/user/'+userId)
+      .then((response) => {
+      console.log(response)});
   }
-}
+}}
 
-export default new ItineraryServie();
+export default new ItineraryService();

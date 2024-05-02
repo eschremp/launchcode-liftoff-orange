@@ -3,8 +3,6 @@ package com.nationalParkApp.demo.service;
 import com.nationalParkApp.demo.Model.Review;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 public interface ReviewService {
     ResponseEntity createReview(Review review);
 
@@ -14,7 +12,7 @@ public interface ReviewService {
 
     ResponseEntity<String> getAllReviewsByUserId(Long id);
 
-    boolean deleteReview(Long id);
+    ResponseEntity<String> deleteReview(Long id);
 
     Review getReviewById();
 

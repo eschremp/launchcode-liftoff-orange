@@ -15,5 +15,5 @@ public interface ItineraryService {
 
     List<Itinerary> getAllItinerariesByParkCode(String parkCode);
 
-    List<Itinerary> getAllItinerariesByUserId(Long id);
+    ResponseEntity getAllItinerariesByUserId(Long id);
 }

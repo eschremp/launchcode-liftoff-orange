@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import FavoritesServices from '../Services/FavoritesServices';
+import ParkDetailsReview from './ParkDetailsReview'
 
 const getParkInfoURL="https://developer.nps.gov/api/v1/parks?parkCode="
 const api_key=import.meta.env.VITE_REACT_APP_NPS_API_KEY;
@@ -33,10 +34,12 @@ function ParkDetails() {
     user: currentUser
   });
   const parkIdChecker = (parkId, currentUser) => {
-    const favoritesList = currentUser.favorites;
+    const favoritesList = currentUser.favorites.map((data) => data.parkCode);
     return favoritesList.includes(parkId);
   }
-  
+  useEffect(() => {if(parkIdChecker(parkId,currentUser)) {
+    setToggle(true);
+  }},[]);
   const Favorite_API_BASE_URL = "http://localhost:8080/api/v1";
   const axiosInstance = axios.create({
     withCredentials: true,
@@ -259,7 +262,6 @@ function ParkDetails() {
           <div>
             <p>{parkInfo.contacts.emailAddresses[0].emailAddress}</p>
             <p>{newPhone}</p>
-            <p className="">place holder text</p>
           </div>
         </div>
 
@@ -282,6 +284,9 @@ function ParkDetails() {
               Create Itinereary
             </button>
           </Link>
+        </div>
+        <div>
+          <ParkDetailsReview />
         </div>
         <div name="map" className="pt-10 drop-shadow-2xl">
           <MapMaker coords={latlong} />

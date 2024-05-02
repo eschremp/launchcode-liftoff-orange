@@ -35,7 +35,7 @@ public class ReviewController {
         return reviewService.getAllReviewsByUserId(id);
     }
 
-    @GetMapping("/review/{parkcode}")
+    @GetMapping("/getparkreviews/{parkCode}")
     public ResponseEntity<String> getAllReviewsByParkCode(@PathVariable String parkCode) { return reviewService.getAllReviewsByParkCode(parkCode); }
 
     @GetMapping(path = "/review{id}")
@@ -46,12 +46,8 @@ public class ReviewController {
     }
 
     @DeleteMapping(path = "/review/{id}")
-    public ResponseEntity<Object> deleteReview(@PathVariable Long id) {
-        boolean deleted = false;
-        deleted = reviewService.deleteReview(id);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", deleted);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> deleteReview(@PathVariable Long reviewId) {
+        return reviewService.deleteReview(reviewId);
     }
 
     @PutMapping(path = "/review/{id}")

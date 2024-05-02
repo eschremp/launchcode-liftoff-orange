@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ItineraryRepository extends JpaRepository<ItineraryEntity, Long> {
 
-    public List<ItineraryEntity> findByParkCode(String parkCode);
+    public List<ItineraryEntity> findAllByParkCode(String parkCode);
 
-    public List<ItineraryEntity> findByUserId(Long id);
+    public List<ItineraryEntity> findAllByUserId(Long userId);
 }

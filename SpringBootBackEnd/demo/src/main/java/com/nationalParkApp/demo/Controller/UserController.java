@@ -2,6 +2,8 @@ package com.nationalParkApp.demo.Controller;
 
 import com.nationalParkApp.demo.Model.Favorites;
 import com.nationalParkApp.demo.Model.User;
+import com.nationalParkApp.demo.entity.ItineraryEntity;
+import com.nationalParkApp.demo.entity.UserEntity;
 import com.nationalParkApp.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +23,9 @@ public class UserController {
     public User createUser(@RequestBody User user) { return userService.createUser(user); }
 
     @GetMapping(path = "/user/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = null;
-        user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity getUserById(@PathVariable Long id) {
+         UserEntity user = userService.getUserById(id);
+        return ResponseEntity.ok(user.getItineraries());
     }
 
     @PutMapping(path = "/user/{id}")

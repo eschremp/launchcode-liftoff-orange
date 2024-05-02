@@ -20,7 +20,7 @@ public class ItineraryController {
         this.itineraryService = itineraryService;
     }
 
-    @PostMapping("/itinerary")
+    @PostMapping("/itinerary/createitinerary")
     public ResponseEntity createItinerary(@RequestBody Itinerary itinerary) { return itineraryService.createItinerary(itinerary); }
 
     @DeleteMapping(path = "/itinerary{id}")
@@ -32,13 +32,13 @@ public class ItineraryController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/itinerary/parkcode{parkCode}")
+    /*@GetMapping(path = "/itinerary/parkcode{parkCode}")
     public List<Itinerary> getAllItinerariesByParkCode(@PathVariable String parkCode) {
         return itineraryService.getAllItinerariesByParkCode(parkCode);
-    }
+    }*/
 
-    @GetMapping(path = "/itinerary/user{id}")
-    public List<Itinerary> getAllItinerariesByUserId(@PathVariable Long id) {
-        return itineraryService.getAllItinerariesByUserId(id);
+    @GetMapping(path = "/itinerary/user/{userId}")
+    public ResponseEntity getAllItinerariesByUserId(@PathVariable Long userId) {
+        return itineraryService.getAllItinerariesByUserId(userId);
     }
 }
